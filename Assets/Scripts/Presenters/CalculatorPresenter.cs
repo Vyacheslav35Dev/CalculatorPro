@@ -18,7 +18,8 @@ namespace Presenters
 
         private readonly List<string> historyExpressions = new();  // List to store past expressions.
         private readonly List<string> historyResults = new();      // List to store corresponding results.
-
+        private string _currentExpression = "";
+        
         /// <summary>
         /// Constructor initializes dependencies, loads previous history,
         /// and subscribes to view events.
@@ -34,15 +35,13 @@ namespace Presenters
 
             // Subscribe to the event triggered when the user clicks the "Calculate" button.
             this.view.OnCalculateButtonClicked += OnCalculateClicked;
-
-            LoadHistory();  // Load previous calculation history from storage upon startup.
         }
 
         /// <summary>
         /// Loads saved calculation history from persistent storage
         /// and displays it in the view.
         /// </summary>
-        private void LoadHistory()
+        public void LoadHistory()
         {
             var data = storage.LoadHistory();
             for (int i = 0; i < data.expressions.Length; i++)
@@ -54,14 +53,17 @@ namespace Presenters
                 // Display each historical calculation in the view.
                 view.SetResult($"{data.expressions[i]} = {data.results[i]}");
             }
+
+            view.InputText = !string.IsNullOrEmpty(data.currentExpression) ? data.currentExpression : "";
         }
 
         /// <summary>
         /// Saves current calculation history to persistent storage.
         /// </summary>
-        private void SaveHistory()
+        public void SaveHistory()
         {
-            storage.SaveHistory(historyExpressions.ToArray(), historyResults.ToArray());
+            _currentExpression = view.InputText;
+            storage.SaveHistory(historyExpressions.ToArray(), historyResults.ToArray(), _currentExpression);
         }
 
         /// <summary>
@@ -88,6 +90,7 @@ namespace Presenters
                 // Add successful calculation to history and save it.
                 historyExpressions.Add(input);
                 historyResults.Add(resStr);
+                _currentExpression = input;
                 SaveHistory();
 
                 // Optionally clear input after successful calculation.
@@ -101,6 +104,7 @@ namespace Presenters
                 // Record error in history for consistency.
                 historyExpressions.Add(input);
                 historyResults.Add("Error");
+                _currentExpression = "";
                 SaveHistory();
                 view.ShowError();
             }

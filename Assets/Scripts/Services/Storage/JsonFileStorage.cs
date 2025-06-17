@@ -11,6 +11,7 @@ namespace Services.Storage
     [System.Serializable]
     class HistoryData
     {
+        public string currentExpression; // Currently entered calculation expression.
         public string[] expressions; // Array of saved calculation expressions.
         public string[] results;     // Corresponding array of calculation results.
     }
@@ -38,11 +39,11 @@ namespace Services.Storage
         /// </summary>
         /// <param name="expressions">Array of calculation expressions as strings.</param>
         /// <param name="results">Array of corresponding calculation results as strings.</param>
-        public void SaveHistory(string[] expressions, string[] results)
+        public void SaveHistory(string[] expressions, string[] results, string currentExpression)
         {
             try
             {
-                var data = new HistoryData { expressions = expressions, results = results };
+                var data = new HistoryData { expressions = expressions, results = results, currentExpression = currentExpression };
                 string json = JsonUtility.ToJson(data); // Serialize data to JSON format.
                 File.WriteAllText(_filePath, json);      // Write JSON string to file.
             }
@@ -58,16 +59,16 @@ namespace Services.Storage
         /// If the file does not exist, returns empty arrays.
         /// </summary>
         /// <returns>A tuple containing arrays of expressions and their corresponding results.</returns>
-        public (string[] expressions, string[] results) LoadHistory()
+        public (string[] expressions, string[] results, string currentExpression) LoadHistory()
         {
             try
             {
                 if (!File.Exists(_filePath))
-                    return (new string[0], new string[0]); // Return empty arrays if no data exists.
+                    return (new string[0], new string[0], ""); // Return empty arrays if no data exists.
 
                 string json = File.ReadAllText(_filePath); // Read JSON content from file.
                 var data = JsonUtility.FromJson<HistoryData>(json); // Deserialize JSON to HistoryData object.
-                return (data.expressions, data.results); // Return stored expressions and results.
+                return (data.expressions, data.results, data.currentExpression); // Return stored expressions and results.
             }
             catch (Exception e)
             {

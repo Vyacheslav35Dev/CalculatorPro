@@ -10,12 +10,12 @@ namespace Services.Storage
         /// </summary>
         /// <param name="expressions">Array of calculation expressions as strings.</param>
         /// <param name="results">Array of calculation results as strings.</param>
-        void SaveHistory(string[] expressions, string[] results);
+        void SaveHistory(string[] expressions, string[] results, string currentExpression);
 
         /// <summary>
         /// Loads the calculation history from persistent storage.
         /// </summary>
         /// <returns>A tuple containing arrays of expressions and their corresponding results.</returns>
-        (string[] expressions, string[] results) LoadHistory();
+        (string[] expressions, string[] results, string currentExpression) LoadHistory();
     }
 }

@@ -17,10 +17,11 @@ public class Bootstrap : MonoBehaviour
         
         // Create presenter and connect all parts:
         _presenter = new CalculatorPresenter(calculatorView, model, storage);
+        _presenter.LoadHistory();
     }
     
     void OnApplicationQuit()
     {
-        PlayerPrefs.Save();
+        _presenter.SaveHistory();
     }
 }
