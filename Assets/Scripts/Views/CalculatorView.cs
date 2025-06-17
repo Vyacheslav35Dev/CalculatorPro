@@ -23,10 +23,6 @@ public class CalculatorView : MonoBehaviour, ICalculatorView
 
     private void Start()
     {
-        // Subscribe button click to event.
-        resultButton.onClick.AddListener(() => OnCalculateButtonClicked?.Invoke());
-
-        // Optional: Initialize output display if needed.
         resultText.text = "";
     }
 
@@ -41,14 +37,28 @@ public class CalculatorView : MonoBehaviour, ICalculatorView
         // InputText = "";
 
         // Example: Scroll view handling can be added here if needed.
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD || true // For debugging purposes only!
-#endif
     }
 
     public void ShowError(string message)
     {
         // Append error message to output display with newline.
         resultText.text += "\n" + message;
+    }
+
+    private void OnCalculateButtonClick()
+    {
+        OnCalculateButtonClicked?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        // Subscribe button click to event.
+        resultButton.onClick.AddListener(OnCalculateButtonClick);
+    }
+    
+    private void OnDisable()
+    {
+        // Unsubscribe button click from event.
+        resultButton.onClick.RemoveListener(OnCalculateButtonClick);
     }
 }

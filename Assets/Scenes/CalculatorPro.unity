@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ac43f9a80945038f6e60a88fc3b466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  calculatorView: {fileID: 0}
+  calculatorView: {fileID: 357608546}
 --- !u!4 &198315065
 Transform:
   m_ObjectHideFlags: 0
