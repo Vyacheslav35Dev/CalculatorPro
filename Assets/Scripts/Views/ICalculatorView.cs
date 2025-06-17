@@ -3,16 +3,32 @@ using System;
 namespace Views
 {
     /// <summary>
-    /// Interface for the calculator UI view.
+    /// Interface defining the contract for the calculator UI view.
+    /// Specifies properties, methods, and events for interacting with the calculator interface.
     /// </summary>
     public interface ICalculatorView
     {
-        string InputText { get; set; } // User input field text.
+        /// <summary>
+        /// Gets or sets the text in the user input field.
+        /// </summary>
+        string InputText { get; set; }
 
-        void SetResult(string result); // Append result or message to output display.
+        /// <summary>
+        /// Appends a calculation result or message to the output display.
+        /// </summary>
+        /// <param name="result">The string containing the result or message to display.</param>
+        void SetResult(string result);
 
-        void ShowError(string message); // Show error message.
+        /// <summary>
+        /// Displays an error message to the user.
+        /// </summary>
+        /// <param name="message">The error message to show.</param>
+        void ShowError(string message);
 
-        event Action OnCalculateButtonClicked; // Event triggered when user presses "Result" button.
+        /// <summary>
+        /// Event triggered when the user clicks the "Result" button.
+        /// Subscribers can handle this event to perform calculations or other actions.
+        /// </summary>
+        event Action OnCalculateButtonClicked;
     }
 }

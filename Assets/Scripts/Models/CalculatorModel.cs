@@ -9,35 +9,40 @@ namespace Models
     /// </summary>
     public class CalculatorModel : ICalculatorModel
     {
+        // Regular expression to validate that the expression contains only digits, plus signs, and whitespace.
+        private static readonly Regex ValidExpressionRegex = new Regex(@"^[\d+\s]+$", RegexOptions.Compiled);
+
         public float? Calculate(string expression)
         {
+            // Check for null or whitespace input
             if (string.IsNullOrWhiteSpace(expression))
                 return null;
 
-            // Validate that expression contains only digits, plus signs, and whitespace.
-            if (!Regex.IsMatch(expression, @"^[\d+\s]+$"))
+            // Validate that the expression contains only allowed characters
+            if (!ValidExpressionRegex.IsMatch(expression))
                 return null;
 
-            try
+            // Split the expression by '+' and remove empty entries
+            var parts = expression.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+
+            float sum = 0f;
+            foreach (var part in parts)
             {
-                // Split the expression by '+' to get individual numbers.
-                string[] parts = expression.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
-                float sum = 0;
-                foreach (var part in parts)
+                string trimmedPart = part.Trim();
+                // Try to parse each part to a float
+                if (float.TryParse(trimmedPart, out float number))
                 {
-                    // Parse each part to float after trimming whitespace.
-                    if (float.TryParse(part.Trim(), out float number))
-                        sum += number;
-                    else
-                        return null; // Parsing failed, invalid input.
+                    sum += number; // Add to total sum
                 }
-                return sum;
+                else
+                {
+                    // Parsing failed, invalid input
+                    return null;
+                }
             }
-            catch
-            {
-                // Catch any unexpected exceptions and return null.
-                return null;
-            }
+
+            // Return the calculated sum
+            return sum;
         }
     }
 }

@@ -8,6 +8,7 @@ public class Bootstrap : MonoBehaviour
     [Header("Calculator View")]
     [SerializeField]
     public CalculatorView calculatorView;
+    private CalculatorPresenter _presenter;
 
     void Start()
     {
@@ -15,11 +16,7 @@ public class Bootstrap : MonoBehaviour
         IStorage storage = new JsonFileStorage();
         
         // Create presenter and connect all parts:
-        var presenter = new CalculatorPresenter(calculatorView, model, storage);
-        
-        /*string expression = "54+21";
-        float result = 75;
-        historyManager.AddEntry(expression, result);*/
+        _presenter = new CalculatorPresenter(calculatorView, model, storage);
     }
     
     void OnApplicationQuit()
