@@ -21,8 +21,8 @@ public class CalculatorView : MonoBehaviour, ICalculatorView
     private Button resultButton; // Button that triggers the calculation process.
     [SerializeField] 
     private ScrollRect scrollRect;     // ScrollRect component for scrolling behavior.
-
-
+    [SerializeField] 
+    private MessageView messageView;     // Message view from show result error.
     /// <summary>
     /// Gets or sets the current text in the input field.
     /// </summary>
@@ -50,20 +50,18 @@ public class CalculatorView : MonoBehaviour, ICalculatorView
     public void SetResult(string result)
     {
         // Append the new result/message with a newline for readability.
-        InputText = "";
-        resultText.text += "\n" + result;
+        resultText.text += result + "\n";
         Canvas.ForceUpdateCanvases();
         scrollRect.verticalNormalizedPosition = 0f;
     }
 
     /// <summary>
     /// Appends an error message to the output display.
+    /// Show message view
     /// </summary>
-    /// <param name="message">The error message to display.</param>
-    public void ShowError(string message)
+    public void ShowError()
     {
-        // Append error message with newline for clarity.
-        resultText.text += "\n" + message;
+        messageView.Show();
     }
 
     /// <summary>

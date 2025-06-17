@@ -102,6 +102,7 @@ namespace Presenters
                 historyExpressions.Add(input);
                 historyResults.Add("Error");
                 SaveHistory();
+                view.ShowError();
             }
         }
     }

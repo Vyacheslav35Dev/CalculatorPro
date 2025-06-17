@@ -22,8 +22,7 @@ namespace Views
         /// <summary>
         /// Displays an error message to the user.
         /// </summary>
-        /// <param name="message">The error message to show.</param>
-        void ShowError(string message);
+        void ShowError();
 
         /// <summary>
         /// Event triggered when the user clicks the "Result" button.
